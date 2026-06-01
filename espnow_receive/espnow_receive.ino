@@ -43,11 +43,12 @@ void loop() {
   VehicleData data;
   bool dataReady;
 
-  noInterrupts();
+  portMUX_TYPE mux = portMUX_INITIALIZER_UNLOCKED;
+  portENTER_CRITICAL(&mux);  
   data = CanData;
   dataReady = newData;
   newData = false;
-  interrupts();
+  portEXIT_CRITICAL(&mux);
 
   if (dataReady) {
     Serial.println("Engine RPM: ");
